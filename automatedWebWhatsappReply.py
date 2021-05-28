@@ -36,6 +36,7 @@ driver = webdriver.Chrome('./chromedriver')
 finalListofNumbers = ['+919400419216', '+919497072620']
 for phoneNumber in finalListofNumbers:
     # urlLink = "https://wa.me/"+phoneNumber+"/?text="+message #Original API
+    print("setting URL")
     urlLink = "https://web.whatsapp.com/send?phone=" + \
         phoneNumber+"&text="+message+"&app_absent=0"
 
@@ -43,11 +44,20 @@ for phoneNumber in finalListofNumbers:
     # pyperclip.copy(urlLink)
     # a = int(input("Send to"+phoneNumber+"Continue?"))
     # End: Copy the created API URL to clipboard
-
+    print("opening page")
+    driver.implicitly_wait(10)
     driver.get(urlLink)
-    WebDriverWait(driver, 30).until(
+    print("Waiting for message to load")
+    WebDriverWait(driver, 100).until(
         EC.presence_of_element_located(
             (By.XPATH, "//span[@class='_3-8er selectable-text copyable-text']/span"))
     )
-    if(driver.find_element_by_xpath("//span[@class='_3-8er selectable-text copyable-text']/span").text):
-        driver.find_element_by_xpath("//button[@class='_1E0Oz']").click()
+    print("wait completed")
+    try:
+        print("In try")
+        if(driver.find_element_by_xpath("//span[@class='_3-8er selectable-text copyable-text']/span").text):
+            print("In if check")
+            driver.find_element_by_xpath("//button[@class='_1E0Oz']").click()
+            print("click completed")
+    except:
+        print("Exception catched")
